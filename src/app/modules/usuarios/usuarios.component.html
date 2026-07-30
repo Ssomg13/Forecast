@@ -1,0 +1,124 @@
+<div class="p-6 bg-white min-h-full">
+
+  <!-- ================= BARRA SUPERIOR (Buscador y Botón) ================= -->
+  <div class="flex justify-between items-center mb-6">
+    <!-- Buscador -->
+    <div class="relative w-full max-w-sm">
+      <span class="absolute left-3 top-2.5 text-gray-400">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+      </span>
+      <input type="text" [(ngModel)]="terminoBusqueda" placeholder="Buscar por nombre o correo..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-sm">
+    </div>
+
+    <!-- Botón Nuevo Usuario -->
+    <button (click)="abrirModal()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium flex items-center gap-2 shadow-sm">
+      <span>+</span> Nuevo usuario
+    </button>
+  </div>
+
+  <!-- ================= TABLA DE USUARIOS ================= -->
+  <div class="border border-gray-200 rounded-lg overflow-hidden">
+    <table class="w-full text-left text-sm">
+      <thead class="bg-gray-50 border-b border-gray-200 text-gray-700 font-semibold">
+      <tr>
+        <th class="p-4">Nombre</th>
+        <th class="p-4">Correo electrónico</th>
+        <th class="p-4">Perfil</th>
+        <th class="p-4">Estado</th>
+        <th class="p-4">Fecha alta</th>
+        <th class="p-4 text-center">Acciones</th>
+      </tr>
+      </thead>
+      <tbody>
+      <!-- Iteramos sobre la lista filtrada -->
+      <tr *ngFor="let u of usuariosFiltrados" class="border-b border-gray-100 hover:bg-gray-50">
+        <td class="p-4 text-gray-800">{{ u.nombreCompleto }}</td>
+        <td class="p-4 text-gray-500">{{ u.correo }}</td>
+        <td class="p-4">
+            <span class="px-3 py-1 rounded-full text-xs font-medium border"
+                  [ngClass]="{
+                    'border-blue-400 text-blue-600 bg-blue-50': u.perfilId === 1 || u.perfilId === 2,
+                    'border-gray-300 text-gray-600 bg-gray-100': u.perfilId === 3
+                  }">
+              {{ obtenerNombrePerfil(u.perfilId) }}
+            </span>
+        </td>
+        <td class="p-4">
+            <span class="px-3 py-1 rounded-full text-xs font-medium"
+                  [ngClass]="{
+                    'bg-green-600 text-white': u.estado === 'Activo',
+                    'bg-gray-200 text-gray-600': u.estado === 'Inactivo'
+                  }">
+              {{ u.estado }}
+            </span>
+        </td>
+        <td class="p-4 text-gray-500">{{ u.fechaAlta || '---' }}</td>
+        <td class="p-4 flex justify-center gap-3 text-gray-400">
+          <!-- Agregamos el evento click pasándole el usuario actual (u) -->
+          <button (click)="abrirModalEdicion(u)" class="hover:text-blue-600 transition-colors">✏️</button>
+          <button class="hover:text-gray-700">🔒</button>
+        </td>
+      </tr>
+
+      <!-- Mensaje si el buscador no encuentra nada -->
+      <tr *ngIf="usuariosFiltrados.length === 0">
+        <td colspan="6" class="p-8 text-center text-gray-500">
+          No se encontraron usuarios que coincidan con la búsqueda.
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ================= VENTANA MODAL (Crear Usuario) ================= -->
+  <div *ngIf="mostrarModal" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/40 backdrop-blur-sm">
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-md p-6 animate-fade-in-up">
+
+      <h2 class="text-xl font-bold text-gray-800 mb-6">
+        {{ modoEdicion ? 'Editar usuario' : 'Nuevo usuario' }}
+      </h2>
+
+      <div class="space-y-4">
+        <input type="text" [(ngModel)]="nuevoUsuario.nombreCompleto" placeholder="Nombre completo" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm text-gray-700 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+
+        <input type="email" [(ngModel)]="nuevoUsuario.correo" placeholder="Correo electrónico" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm text-gray-700 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+
+        <select [(ngModel)]="nuevoUsuario.perfilId" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm text-gray-600 bg-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+          <option [value]="0" disabled selected>Perfil</option>
+          <!-- Usamos ngFor para dibujar las opciones desde la API -->
+          <option *ngFor="let p of perfiles" [value]="p.perfilId">
+            {{ p.nombre }}
+          </option>
+        </select>
+
+        <ng-container *ngIf="!modoEdicion">
+          <div class="relative">
+            <input type="password" [(ngModel)]="nuevoUsuario.password" placeholder="Contraseña" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm text-gray-700 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+          </div>
+          <input type="password" [(ngModel)]="nuevoUsuario.confirmarPassword" placeholder="Confirmar contraseña" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm text-gray-700 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+        </ng-container>
+
+        <!-- Toggle Switch CSS Puro -->
+        <label class="flex items-center gap-3 cursor-pointer mt-4">
+          <div class="relative">
+            <input type="checkbox" [(ngModel)]="nuevoUsuario.activo" class="sr-only peer">
+            <div class="w-10 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
+          </div>
+          <span class="text-sm font-medium text-gray-700">Usuario activo</span>
+        </label>
+      </div>
+
+      <!-- Botones del Modal -->
+      <div class="mt-8 flex justify-end gap-3">
+        <button (click)="cerrarModal()" class="px-5 py-2 border border-gray-300 rounded-lg text-blue-600 font-medium text-sm hover:bg-gray-50 transition-colors">
+          Cancelar
+        </button>
+        <button (click)="guardarUsuario()" class="px-5 py-2 bg-blue-600 text-white rounded-lg font-medium text-sm hover:bg-blue-700 transition-colors shadow-sm">
+          {{ modoEdicion ? 'Guardar cambios' : 'Crear usuario' }}
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</div>

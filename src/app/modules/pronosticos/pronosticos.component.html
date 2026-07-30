@@ -1,0 +1,155 @@
+<div class="p-6 bg-gray-50 min-h-screen">
+
+  <!-- BARRA DE FILTROS AVANZADOS -->
+  <div class="bg-white p-4 rounded-xl shadow-sm mb-6 border border-gray-100">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="font-bold text-gray-800 flex items-center gap-2">
+        🔍 Filtros Avanzados
+      </h3>
+      <div class="flex gap-2">
+        <button class="px-3 py-1.5 text-sm border rounded-lg text-gray-600 hover:bg-gray-50">📁 Guardar</button>
+        <button class="px-3 py-1.5 text-sm border rounded-lg text-gray-600 hover:bg-gray-50">📂 Cargar</button>
+      </div>
+    </div>
+
+    <!-- Inputs de filtros -->
+    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3 items-center">
+      <input type="text" placeholder="Departamento" class="p-2 text-sm border rounded-lg bg-gray-50">
+      <input type="text" placeholder="Subdepart" class="p-2 text-sm border rounded-lg bg-gray-50">
+      <input type="text" placeholder="Categoría" class="p-2 text-sm border rounded-lg bg-gray-50">
+      <input type="text" placeholder="Región" class="p-2 text-sm border rounded-lg bg-gray-50">
+      <input type="text" placeholder="Zona" class="p-2 text-sm border rounded-lg bg-gray-50">
+      <input type="text" placeholder="Tienda" class="p-2 text-sm border rounded-lg bg-gray-50">
+      <input type="date" class="p-2 text-sm border rounded-lg bg-gray-50">
+      <select class="p-2 text-sm border rounded-lg bg-gray-50">
+        <option>Estado</option>
+      </select>
+    </div>
+
+    <div class="flex justify-end gap-3 mt-4">
+      <button class="px-4 py-2 text-sm text-blue-600 border border-blue-200 rounded-lg hover:bg-blue-50">Limpiar</button>
+      <button class="px-4 py-2 text-sm text-white bg-blue-600 rounded-lg hover:bg-blue-700 flex items-center gap-2">
+        🔍 Aplicar Filtros
+      </button>
+    </div>
+  </div>
+
+  <!-- CONTENEDOR DE ÁRBOLES (PRODUCTOS E TIENDAS) -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+    <!-- Productos -->
+    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+      <div class="flex justify-between items-center mb-3">
+        <span class="font-semibold text-gray-700 flex items-center gap-2">📦 Productos</span>
+      </div>
+      <input type="text" placeholder="Buscar..." class="w-full p-2 text-sm border rounded-lg mb-3 bg-gray-50">
+      <div class="border rounded-lg p-3 bg-gray-50 text-sm">
+        <div class="flex justify-between items-center py-1 font-medium text-blue-900 cursor-pointer">
+          <span>▼ --</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tiendas -->
+    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+      <div class="flex justify-between items-center mb-3">
+        <span class="font-semibold text-gray-700 flex items-center gap-2">🏢 Tiendas</span>
+      </div>
+      <input type="text" placeholder="Buscar..." class="w-full p-2 text-sm border rounded-lg mb-3 bg-gray-50">
+      <div class="border rounded-lg p-3 bg-gray-50 text-sm">
+        <div class="flex justify-between items-center py-1 font-medium text-blue-900">
+          <span>▼ --</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN DE PRONÓSTICOS SEMANALES (TABLA) -->
+  <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 mb-6">
+    <div class="flex justify-between items-center mb-3">
+      <div>
+        <h3 class="font-bold text-gray-800">Pronósticos Semanales</h3>
+        <p class="text-xs text-gray-500">Mostrando todos los datos</p>
+      </div>
+      <div class="flex gap-2">
+        <button class="px-3 py-1.5 text-sm border rounded-lg text-gray-600 hover:bg-gray-50">📥 Importar Excel</button>
+        <button class="px-3 py-1.5 text-sm border rounded-lg text-gray-600 hover:bg-gray-50">📤 Exportar Excel</button>
+        <button class="px-3 py-1.5 text-sm border rounded-lg text-blue-600 border-blue-200 hover:bg-blue-50">💾 Guardar Cambios</button>
+      </div>
+    </div>
+
+    <!-- Alerta amarilla -->
+    <div class="bg-amber-50 border-l-4 border-amber-400 p-3 text-amber-800 text-sm rounded-r-lg mb-4 flex items-center gap-2">
+      💡 Selecciona un producto y/o tienda de los árboles para ver pronósticos específicos
+    </div>
+
+    <!-- Tabla de Semanas -->
+    <div class="overflow-x-auto border rounded-lg">
+      <table class="w-full text-left border-collapse text-sm">
+        <thead>
+        <tr class="bg-gray-100 border-b text-gray-700">
+          <th class="p-2 border-r">Semana</th>
+          <th class="p-2 border-r text-center">S18</th>
+          <th class="p-2 border-r text-center">S19</th>
+          <th class="p-2 border-r text-center">S20</th>
+          <th class="p-2 border-r text-center">S21</th>
+          <th class="p-2 border-r text-center">S22</th>
+          <th class="p-2 border-r text-center">S18</th>
+          <th class="p-2 border-r text-center">S24</th>
+          <th class="p-2 border-r text-center">S25</th>
+          <th class="p-2 border-r text-center">S26</th>
+          <th class="p-2 border-r text-center">S27</th>
+          <th class="p-2 border-r text-center">S28</th>
+          <th class="p-2 text-center">S29</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="border-b">
+          <td class="p-2 font-medium border-r bg-gray-50">Histórico ▾</td>
+          <td *ngFor="let s of [1,2,3,4,5,6,7,8,9,10,11,12]" class="border-r p-2"></td>
+        </tr>
+        <tr class="border-b">
+          <td class="p-2 font-medium border-r bg-gray-50">Pronóstico ▾</td>
+          <td *ngFor="let s of [1,2,3,4,5,6,7,8,9,10,11,12]" class="border-r p-2"></td>
+        </tr>
+        <tr class="border-b bg-amber-50/30">
+          <td class="p-2 font-medium border-r bg-amber-50 text-amber-900">Propuesta ▾</td>
+          <td class="border-r p-2 text-center text-green-600">— ✏️</td>
+          <td class="border-r p-2 text-center text-green-600">— ✏️</td>
+          <td class="border-r p-2 text-center text-green-600">— ✏️</td>
+          <td class="border-r p-2 text-center text-green-600">— ✏️</td>
+          <td class="border-r p-2 text-center text-green-600">— ✏️</td>
+          <td class="border-r p-2 text-center text-green-600">— ✏️</td>
+          <td class="border-r p-2 text-center text-green-600">— ✏️</td>
+          <td class="border-r p-2 text-center text-green-600">— ✏️</td>
+          <td class="border-r p-2 text-center text-green-600">— ✏️</td>
+          <td class="border-r p-2 text-center text-green-600">— ✏️</td>
+          <td class="border-r p-2 text-center text-green-600">— ✏️</td>
+          <td class="p-2 text-center text-green-600">— ✏️</td>
+        </tr>
+        <tr>
+          <td class="p-2 font-medium border-r bg-gray-50">Estado ▾</td>
+          <td *ngFor="let s of [1,2,3,4,5,6,7,8,9,10,11,12]" class="border-r p-2"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="flex justify-end mt-4">
+      <button class="px-6 py-2.5 text-sm text-white bg-blue-600 rounded-lg hover:bg-blue-700 flex items-center gap-2 shadow-sm">
+        📤 Enviar propuesta al comprador
+      </button>
+    </div>
+  </div>
+
+  <!-- BANNER INFERIOR DE AYUDA -->
+  <div class="bg-blue-600 text-white p-4 rounded-xl shadow-sm text-sm">
+    <div class="font-bold mb-1 flex items-center gap-2">💡 Cómo usar los filtros:</div>
+    <ol class="list-decimal list-inside space-y-1 text-blue-100 text-xs">
+      <li>Filtros Avanzados: selecciona departamentos, regiones, tiendas, etc. y haz clic en "Aplicar Filtros"</li>
+      <li>Árboles filtrados: solo se mostrarán los productos/tiendas que coinciden con tus filtros</li>
+      <li>Selección: Haz clic en un producto o tienda para ver sus pronósticos específicos en la tabla</li>
+      <li>Edición: Haz clic en el icono de lápiz ✏️ en la fila "Propuesta" para capturar un valor; usa 💾 para aprobar o ❌ para cancelar</li>
+    </ol>
+  </div>
+
+</div>
