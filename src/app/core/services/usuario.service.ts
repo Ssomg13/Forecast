@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 // Basado en el esquema "UsuarioResponse" de tu Swagger
 export interface UsuarioResponse {
@@ -35,8 +36,8 @@ export interface UsuarioUpdateRequest {
   providedIn: 'root'
 })
 export class UsuarioService {
-  // Asegúrate de usar la ruta que tu Proxy maneja localmente
-  private baseUrl = '/api/v1/usuario';
+  // 2. Concatena la URL base con el endpoint específico
+  private baseUrl = `${environment.apiUrl}/usuario`;
 
   constructor(private http: HttpClient) {}
 

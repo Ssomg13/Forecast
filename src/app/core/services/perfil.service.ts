@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 export interface Perfil {
   perfilId: number;
@@ -9,7 +10,6 @@ export interface Perfil {
   descripcion?: string;
   fechaAlta?: string;
   activo: boolean;
-  // Nota: usuariosCount no viene en la API actual, lo simularemos en la vista.
 }
 
 export interface PerfilRequest {
@@ -21,8 +21,9 @@ export interface PerfilRequest {
 @Injectable({
   providedIn: 'root'
 })
-export class PerfilService {
-  private baseUrl = '/api/v1/perfil';
+export class UsuarioService {
+  // 2. Concatena la URL base con el endpoint específico
+  private baseUrl = `${environment.apiUrl}/usuario`;
 
   constructor(private http: HttpClient) {}
 
