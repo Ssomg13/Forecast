@@ -21,7 +21,7 @@ export interface PerfilRequest {
 @Injectable({
   providedIn: 'root'
 })
-export class UsuarioService {
+export class PerfilService {
   // 2. Concatena la URL base con el endpoint específico
   private baseUrl = `${environment.apiUrl}/usuario`;
 
