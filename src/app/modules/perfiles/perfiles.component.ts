@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { PerfilService, Perfil, PerfilRequest } from '../../core/services/perfil.service'; // Ajusta la ruta
+import { PerfilService, Perfil, PerfilRequest } from '../../core/services/perfil.service';
 
 @Component({
   selector: 'app-perfiles',

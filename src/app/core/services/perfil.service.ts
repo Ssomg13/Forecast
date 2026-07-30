@@ -23,7 +23,7 @@ export interface PerfilRequest {
 })
 export class PerfilService {
   // 2. Concatena la URL base con el endpoint específico
-  private baseUrl = `${environment.apiUrl}/usuario`;
+  private baseUrl = `${environment.apiUrl}/perfil`;
 
   constructor(private http: HttpClient) {}
 
