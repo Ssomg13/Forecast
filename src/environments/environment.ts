@@ -1,5 +1,4 @@
 export const environment = {
-  production: false,
-  // IMPORTANTE: Quitamos https://...railway.app y dejamos solo la ruta
-  apiUrl: '/api/v1'
+  production: true, // o false, según el archivo
+  apiUrl: 'https://pronosticos-api-production.up.railway.app/api/v1'
 };
