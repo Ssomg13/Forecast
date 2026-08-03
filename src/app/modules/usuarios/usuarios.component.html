@@ -7,7 +7,8 @@
       <span class="absolute left-3 top-2.5 text-gray-400">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
       </span>
-      <input type="text" [(ngModel)]="terminoBusqueda" placeholder="Buscar por nombre o correo..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-sm">
+      <!-- Se agregó id="terminoBusqueda" name="terminoBusqueda" -->
+      <input type="text" id="terminoBusqueda" name="terminoBusqueda" [(ngModel)]="terminoBusqueda" placeholder="Buscar por nombre o correo..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-sm">
     </div>
 
     <!-- Botón Nuevo Usuario -->
@@ -79,13 +80,15 @@
       </h2>
 
       <div class="space-y-4">
-        <input type="text" [(ngModel)]="nuevoUsuario.nombreCompleto" placeholder="Nombre completo" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm text-gray-700 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+        <!-- Se agregó id y name a Nombre -->
+        <input type="text" id="nombreCompleto" name="nombreCompleto" [(ngModel)]="nuevoUsuario.nombreCompleto" placeholder="Nombre completo" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm text-gray-700 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
 
-        <input type="email" [(ngModel)]="nuevoUsuario.correo" placeholder="Correo electrónico" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm text-gray-700 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+        <!-- Se agregó id y name a Correo -->
+        <input type="email" id="correo" name="correo" [(ngModel)]="nuevoUsuario.correo" placeholder="Correo electrónico" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm text-gray-700 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
 
-        <select [(ngModel)]="nuevoUsuario.perfilId" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm text-gray-600 bg-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+        <!-- Se agregó id y name al Select de Perfil -->
+        <select id="perfilId" name="perfilId" [(ngModel)]="nuevoUsuario.perfilId" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm text-gray-600 bg-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
           <option [value]="0" disabled selected>Perfil</option>
-          <!-- Usamos ngFor para dibujar las opciones desde la API -->
           <option *ngFor="let p of perfiles" [value]="p.perfilId">
             {{ p.nombre }}
           </option>
@@ -93,15 +96,17 @@
 
         <ng-container *ngIf="!modoEdicion">
           <div class="relative">
-            <input type="password" [(ngModel)]="nuevoUsuario.password" placeholder="Contraseña" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm text-gray-700 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+            <!-- Se agregó id y name a Contraseña -->
+            <input type="password" id="password" name="password" [(ngModel)]="nuevoUsuario.password" placeholder="Contraseña" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm text-gray-700 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
           </div>
-          <input type="password" [(ngModel)]="nuevoUsuario.confirmarPassword" placeholder="Confirmar contraseña" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm text-gray-700 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+          <!-- Se agregó id y name a Confirmar Contraseña -->
+          <input type="password" id="confirmarPassword" name="confirmarPassword" [(ngModel)]="nuevoUsuario.confirmarPassword" placeholder="Confirmar contraseña" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm text-gray-700 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
         </ng-container>
 
-        <!-- Toggle Switch CSS Puro -->
-        <label class="flex items-center gap-3 cursor-pointer mt-4">
+        <!-- Toggle Switch CSS Puro (Se agregó for en el label y id/name en el input) -->
+        <label for="usuarioActivo" class="flex items-center gap-3 cursor-pointer mt-4">
           <div class="relative">
-            <input type="checkbox" [(ngModel)]="nuevoUsuario.activo" class="sr-only peer">
+            <input type="checkbox" id="usuarioActivo" name="usuarioActivo" [(ngModel)]="nuevoUsuario.activo" class="sr-only peer">
             <div class="w-10 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
           </div>
           <span class="text-sm font-medium text-gray-700">Usuario activo</span>
