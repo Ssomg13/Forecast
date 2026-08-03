@@ -138,6 +138,35 @@ export class UsuariosComponent implements OnInit {
         error: (err) => console.error('Error al actualizar usuario', err)
       });
     }
+    else {
+      // SI ES UN NUEVO USUARIO
+
+      // 1. Validamos que las contraseñas coincidan
+      if (this.nuevoUsuario.password !== this.nuevoUsuario.confirmarPassword) {
+        alert('Las contraseñas no coinciden');
+        return;
+      }
+
+      // 2. Armamos el paquete de datos
+      const payloadCrear: UsuarioCreateRequest = {
+        nombreCompleto: this.nuevoUsuario.nombreCompleto,
+        correo: this.nuevoUsuario.correo,
+        perfilId: Number(this.nuevoUsuario.perfilId),
+        password: this.nuevoUsuario.password,
+      };
+
+      // 3. Hacemos el POST (llamando al servicio)
+      this.usuarioService.crearUsuario(payloadCrear).subscribe({
+        next: () => {
+          this.cerrarModal(); // Cerramos la ventanita
+          this.cargarUsuarios(); // Recargamos la tabla para ver al nuevo
+        },
+        error: (err) => {
+          console.error('Error al crear usuario', err);
+          alert('Hubo un error al crear el usuario. Revisa la consola.');
+        }
+      });
+    }
   }
 
   cambiarEstadoUsuario(usuario: UsuarioResponse) {
