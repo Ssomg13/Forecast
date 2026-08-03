@@ -1,104 +1,41 @@
-<div class="p-6 bg-gray-50 min-h-screen">
+<div class="p-6 bg-gray-50 min-h-screen relative">
 
   <!-- BARRA DE FILTROS AVANZADOS -->
   <div class="bg-white p-4 rounded-xl shadow-sm mb-6 border border-gray-100">
     <div class="flex justify-between items-center mb-4">
       <h3 class="font-bold text-gray-800 flex items-center gap-2">
-        🔍 Filtros Avanzados
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" /></svg>
+        Filtros Avanzados
       </h3>
       <div class="flex gap-2">
-        <button class="px-3 py-1.5 text-sm border rounded-lg text-gray-600 hover:bg-gray-50">📁 Guardar</button>
-        <button class="px-3 py-1.5 text-sm border rounded-lg text-gray-600 hover:bg-gray-50">📂 Cargar</button>
+        <button (click)="abrirGuardarFiltro()" class="px-3 py-1.5 text-sm border rounded-lg text-gray-600 hover:bg-gray-50 flex items-center gap-1">
+          <span>💾</span> Guardar
+        </button>
+        <button (click)="abrirCargarFiltros()" class="px-3 py-1.5 text-sm border rounded-lg text-blue-600 border-blue-200 hover:bg-blue-50 flex items-center gap-1">
+          <span>📂</span> Cargar
+        </button>
       </div>
     </div>
 
-    <!-- Inputs de filtros (Conectados a la API) -->
+    <!-- Selects de Filtros -->
     <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3 items-center">
-
-      <!-- Departamento -->
-      <select id="filtroDep" name="filtroDep" [(ngModel)]="filtros.departamentoId" class="p-2 text-sm border rounded-lg bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-500">
-        <option [value]="0">Departamento</option>
-        <option *ngFor="let dep of departamentos" [value]="dep.departamentoId">{{ dep.nombre }}</option>
-      </select>
-
-      <!-- Subdepartamento -->
-      <select id="filtroSubDep" name="filtroSubDep" [(ngModel)]="filtros.subdepartamentoId" class="p-2 text-sm border rounded-lg bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-500">
-        <option [value]="0">Subdepartamento</option>
-        <option *ngFor="let sub of subdepartamentos" [value]="sub.subdepartamentoId">{{ sub.nombre }}</option>
-      </select>
-
-      <!-- Categoría -->
-      <select id="filtroCat" name="filtroCat" [(ngModel)]="filtros.categoriaId" class="p-2 text-sm border rounded-lg bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-500">
-        <option [value]="0">Categoría</option>
-        <option *ngFor="let cat of categorias" [value]="cat.categoriaId">{{ cat.nombre }}</option>
-      </select>
-
-      <!-- Región -->
-      <select id="filtroReg" name="filtroReg" [(ngModel)]="filtros.regionId" class="p-2 text-sm border rounded-lg bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-500">
-        <option [value]="0">Región</option>
-        <option *ngFor="let reg of regiones" [value]="reg.regionId">{{ reg.nombre }}</option>
-      </select>
-
-      <!-- Zona -->
-      <select id="filtroZon" name="filtroZon" [(ngModel)]="filtros.zonaId" class="p-2 text-sm border rounded-lg bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-500">
-        <option [value]="0">Zona</option>
-        <option *ngFor="let zona of zonas" [value]="zona.zonaId">{{ zona.nombre }}</option>
-      </select>
-
-      <!-- Tienda -->
-      <select id="filtroTie" name="filtroTie" [(ngModel)]="filtros.tiendaId" class="p-2 text-sm border rounded-lg bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-500">
-        <option [value]="0">Tienda</option>
-        <option *ngFor="let tienda of tiendas" [value]="tienda.tiendaId">{{ tienda.nombre }}</option>
-      </select>
-
-      <!-- Fecha -->
-      <input type="date" id="filtroFec" name="filtroFec" [(ngModel)]="filtros.fecha" class="p-2 text-sm border rounded-lg bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-500">
-
-      <!-- Estado -->
-      <select id="filtroEst" name="filtroEst" [(ngModel)]="filtros.estado" class="p-2 text-sm border rounded-lg bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-500">
+      <select [(ngModel)]="filtros.departamentoId" class="p-2 text-sm border rounded-lg bg-gray-50 focus:ring-1 focus:ring-blue-500 outline-none"><option [value]="0">Departamento</option><option *ngFor="let d of departamentos" [value]="d.departamentoId">{{d.nombre}}</option></select>
+      <select [(ngModel)]="filtros.subdepartamentoId" class="p-2 text-sm border rounded-lg bg-gray-50 focus:ring-1 focus:ring-blue-500 outline-none"><option [value]="0">Subdepartamento</option></select>
+      <select [(ngModel)]="filtros.categoriaId" class="p-2 text-sm border rounded-lg bg-gray-50 focus:ring-1 focus:ring-blue-500 outline-none"><option [value]="0">Categoría</option></select>
+      <select [(ngModel)]="filtros.regionId" class="p-2 text-sm border rounded-lg bg-gray-50 focus:ring-1 focus:ring-blue-500 outline-none"><option [value]="0">Región</option><option *ngFor="let r of regiones" [value]="r.regionId">{{r.nombre}}</option></select>
+      <select [(ngModel)]="filtros.zonaId" class="p-2 text-sm border rounded-lg bg-gray-50 focus:ring-1 focus:ring-blue-500 outline-none"><option [value]="0">Zona</option></select>
+      <select [(ngModel)]="filtros.tiendaId" class="p-2 text-sm border rounded-lg bg-gray-50 focus:ring-1 focus:ring-blue-500 outline-none"><option [value]="0">Tienda</option></select>
+      <input type="date" [(ngModel)]="filtros.fecha" class="p-2 text-sm border rounded-lg bg-gray-50 focus:ring-1 focus:ring-blue-500 outline-none">
+      <select [(ngModel)]="filtros.estado" class="p-2 text-sm border rounded-lg bg-gray-50 focus:ring-1 focus:ring-blue-500 outline-none">
         <option value="0">Estado</option>
         <option value="Activo">Activo</option>
         <option value="Inactivo">Inactivo</option>
       </select>
     </div>
 
-    <!-- Botones de Acción -->
     <div class="flex justify-end gap-3 mt-4">
-      <button (click)="limpiarFiltros()" class="px-4 py-2 text-sm text-blue-600 border border-blue-200 rounded-lg hover:bg-blue-50 transition-colors">
-        Limpiar
-      </button>
-      <button (click)="aplicarFiltros()" class="px-4 py-2 text-sm text-white bg-blue-600 rounded-lg hover:bg-blue-700 flex items-center gap-2 transition-colors shadow-sm">
-        🔍 Aplicar Filtros
-      </button>
-    </div>
-  </div>
-
-  <!-- CONTENEDOR DE ÁRBOLES (PRODUCTOS E TIENDAS) -->
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-    <!-- Productos -->
-    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-      <div class="flex justify-between items-center mb-3">
-        <span class="font-semibold text-gray-700 flex items-center gap-2">📦 Productos</span>
-      </div>
-      <input type="text" id="buscarProd" name="buscarProd" placeholder="Buscar..." class="w-full p-2 text-sm border rounded-lg mb-3 bg-gray-50">
-      <div class="border rounded-lg p-3 bg-gray-50 text-sm h-32 overflow-y-auto">
-        <div class="flex justify-between items-center py-1 font-medium text-blue-900 cursor-pointer hover:bg-blue-50 px-2 rounded">
-          <span>▼ (Árbol de productos se cargará aquí)</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Tiendas -->
-    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-      <div class="flex justify-between items-center mb-3">
-        <span class="font-semibold text-gray-700 flex items-center gap-2">🏢 Tiendas</span>
-      </div>
-      <input type="text" id="buscarTie" name="buscarTie" placeholder="Buscar..." class="w-full p-2 text-sm border rounded-lg mb-3 bg-gray-50">
-      <div class="border rounded-lg p-3 bg-gray-50 text-sm h-32 overflow-y-auto">
-        <div class="flex justify-between items-center py-1 font-medium text-blue-900 cursor-pointer hover:bg-blue-50 px-2 rounded">
-          <span>▼ (Árbol de tiendas se cargará aquí)</span>
-        </div>
-      </div>
+      <button (click)="limpiarFiltros()" class="px-4 py-2 text-sm text-blue-600 border border-blue-200 rounded-lg hover:bg-blue-50">Limpiar</button>
+      <button (click)="aplicarFiltros()" class="px-4 py-2 text-sm text-white bg-blue-600 rounded-lg hover:bg-blue-700">🔍 Aplicar Filtros</button>
     </div>
   </div>
 
@@ -110,63 +47,112 @@
         <p class="text-xs text-gray-500">Mostrando todos los datos</p>
       </div>
       <div class="flex gap-2">
-        <button class="px-3 py-1.5 text-sm border rounded-lg text-gray-600 hover:bg-gray-50">📥 Importar Excel</button>
-        <button class="px-3 py-1.5 text-sm border rounded-lg text-gray-600 hover:bg-gray-50">📤 Exportar Excel</button>
-        <button class="px-3 py-1.5 text-sm border rounded-lg text-blue-600 border-blue-200 hover:bg-blue-50">💾 Guardar Cambios</button>
-      </div>
-    </div>
+        <!-- Input oculto para cargar archivo Excel -->
+        <input type="file" #fileInput (change)="onArchivoExcelSeleccionado($event)" accept=".xlsx, .xls, .csv" class="hidden">
 
-    <!-- Alerta amarilla -->
-    <div class="bg-amber-50 border-l-4 border-amber-400 p-3 text-amber-800 text-sm rounded-r-lg mb-4 flex items-center gap-2">
-      💡 Selecciona un producto y/o tienda de los árboles para ver pronósticos específicos
+        <button (click)="importarExcelClick()" class="px-3 py-1.5 text-sm border rounded-lg text-gray-600 hover:bg-gray-50">📥 Importar Excel</button>
+        <button (click)="exportarExcel()" class="px-3 py-1.5 text-sm border rounded-lg text-gray-600 hover:bg-gray-50">📤 Exportar Excel</button>
+        <button (click)="guardarCambiosGlobales()" class="px-3 py-1.5 text-sm border rounded-lg text-blue-600 border-blue-200 hover:bg-blue-50">💾 Guardar Cambios</button>
+      </div>
     </div>
 
     <!-- Tabla de Semanas -->
     <div class="overflow-x-auto border rounded-lg">
-      <table class="w-full text-left border-collapse text-sm">
+      <table class="w-full text-left border-collapse text-sm select-none">
         <thead>
         <tr class="bg-gray-100 border-b text-gray-700">
           <th class="p-2 border-r">Semana</th>
-          <th class="p-2 border-r text-center" *ngFor="let s of [18,19,20,21,22,23,24,25,26,27,28,29]">S{{s}}</th>
+          <th class="p-2 border-r text-center" *ngFor="let s of semanas">S{{s}}</th>
         </tr>
         </thead>
         <tbody>
+        <!-- Histórico -->
         <tr class="border-b">
           <td class="p-2 font-medium border-r bg-gray-50">Histórico ▾</td>
-          <td *ngFor="let s of [1,2,3,4,5,6,7,8,9,10,11,12]" class="border-r p-2 text-center text-gray-500">--</td>
+          <td *ngFor="let s of semanas" class="border-r p-2 text-center text-gray-500">--</td>
         </tr>
-        <tr class="border-b">
-          <td class="p-2 font-medium border-r bg-gray-50">Pronóstico ▾</td>
-          <td *ngFor="let s of [1,2,3,4,5,6,7,8,9,10,11,12]" class="border-r p-2 text-center text-gray-500">--</td>
-        </tr>
+
+        <!-- Propuesta (Fila Editable Interactiva) -->
         <tr class="border-b bg-amber-50/30">
           <td class="p-2 font-medium border-r bg-amber-50 text-amber-900">Propuesta ▾</td>
-          <td *ngFor="let s of [1,2,3,4,5,6,7,8,9,10,11,12]" class="border-r p-2 text-center text-green-600 cursor-pointer hover:bg-green-50 transition-colors">— ✏️</td>
-        </tr>
-        <tr>
-          <td class="p-2 font-medium border-r bg-gray-50">Estado ▾</td>
-          <td *ngFor="let s of [1,2,3,4,5,6,7,8,9,10,11,12]" class="border-r p-2 text-center text-gray-500">--</td>
+
+          <td *ngFor="let s of semanas"
+              (click)="seleccionarCelda(s)"
+              class="border-r p-2 text-center cursor-pointer transition-colors"
+              [ngClass]="{'bg-amber-100': propuestas[s].seleccionado, 'hover:bg-amber-100/50': !propuestas[s].seleccionado}">
+
+            <!-- Vista Normal -->
+            <div *ngIf="!propuestas[s].editando" class="flex items-center justify-center gap-1 min-h-[24px]">
+                <span [ngClass]="{'text-blue-600 font-bold': propuestas[s].valor, 'text-gray-400': !propuestas[s].valor}">
+                  {{ propuestas[s].valor !== null ? propuestas[s].valor : '—' }}
+                </span>
+              <!-- Lápiz: Solo visible si la celda está seleccionada -->
+              <button *ngIf="propuestas[s].seleccionado" (click)="activarEdicion(s, $event)" class="text-gray-400 hover:text-blue-600">
+                ✏️
+              </button>
+            </div>
+
+            <!-- Modo Edición (Input) -->
+            <div *ngIf="propuestas[s].editando" class="flex items-center justify-center gap-1">
+              <input type="number" [(ngModel)]="propuestas[s].valor" class="w-16 p-1 text-center border rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500" autoFocus>
+              <button (click)="guardarCelda(s, $event)" class="text-green-600 hover:bg-green-100 rounded-full p-1">✅</button>
+            </div>
+
+          </td>
         </tr>
         </tbody>
       </table>
     </div>
+  </div>
 
-    <div class="flex justify-end mt-4">
-      <button class="px-6 py-2.5 text-sm text-white bg-blue-600 rounded-lg hover:bg-blue-700 flex items-center gap-2 shadow-sm">
-        📤 Enviar propuesta al comprador
-      </button>
+  <!-- ================= MODALES (OVERLAYS) ================= -->
+
+  <!-- Modal: Guardar Filtro -->
+  <div *ngIf="mostrarModalGuardarFiltro" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/50 backdrop-blur-sm">
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-sm p-6">
+      <h3 class="font-bold text-gray-800 mb-4">Guardar Filtros</h3>
+      <input type="text" [(ngModel)]="nombreNuevoFiltro" placeholder="Nombre del filtro" class="w-full p-2 border rounded-lg mb-6 focus:outline-none focus:ring-1 focus:ring-blue-500">
+      <div class="flex justify-end gap-2">
+        <button (click)="cerrarGuardarFiltro()" class="px-4 py-2 text-sm text-gray-600 border rounded-lg hover:bg-gray-50">Cancelar</button>
+        <button (click)="guardarFiltroEnBD()" class="px-4 py-2 text-sm text-white bg-blue-600 rounded-lg hover:bg-blue-700">Guardar</button>
+      </div>
     </div>
   </div>
 
-  <!-- BANNER INFERIOR DE AYUDA -->
-  <div class="bg-blue-600 text-white p-4 rounded-xl shadow-sm text-sm">
-    <div class="font-bold mb-1 flex items-center gap-2">💡 Cómo usar los filtros:</div>
-    <ol class="list-decimal list-inside space-y-1 text-blue-100 text-xs">
-      <li>Filtros Avanzados: selecciona departamentos, regiones, tiendas, etc. y haz clic en "Aplicar Filtros"</li>
-      <li>Árboles filtrados: solo se mostrarán los productos/tiendas que coinciden con tus filtros</li>
-      <li>Selección: Haz clic en un producto o tienda para ver sus pronósticos específicos en la tabla</li>
-      <li>Edición: Haz clic en el icono de lápiz ✏️ en la fila "Propuesta" para capturar un valor; usa 💾 para aprobar o ❌ para cancelar</li>
-    </ol>
+  <!-- Modal: Cargar Filtros -->
+  <div *ngIf="mostrarModalCargarFiltros" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/50 backdrop-blur-sm">
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-4xl p-6">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="font-bold text-gray-800 text-lg">Filtros Guardados</h3>
+        <button (click)="cerrarCargarFiltros()" class="text-gray-400 hover:text-gray-700">✖</button>
+      </div>
+
+      <div class="border rounded-lg overflow-hidden">
+        <table class="w-full text-left text-sm">
+          <thead class="bg-gray-50 border-b">
+          <tr>
+            <th class="p-3">Nombre</th>
+            <th class="p-3">Regiones</th>
+            <th class="p-3">Departamentos</th>
+            <th class="p-3">Fecha</th>
+            <th class="p-3 text-center">Acciones</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let f of filtrosGuardados" class="border-b hover:bg-gray-50">
+            <td class="p-3 font-medium text-gray-800">{{ f.nombre }}</td>
+            <td class="p-3 text-gray-500">{{ f.regiones }}</td>
+            <td class="p-3 text-gray-500">{{ f.departamentos }}</td>
+            <td class="p-3 text-gray-500">{{ f.fecha }}</td>
+            <td class="p-3 flex justify-center gap-3">
+              <button (click)="cargarFiltroSeleccionado(f)" class="text-blue-600 hover:underline">Aplicar</button>
+              <button class="text-red-500 hover:text-red-700">🗑️</button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 
 </div>

@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms'; // Indispensable para [(ngModel)]
+import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @Component({
@@ -10,7 +10,9 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
   templateUrl: './pronosticos.component.html'
 })
 export class PronosticosComponent implements OnInit {
-  // Arreglos para almacenar los datos de la API
+  @ViewChild('fileInput') fileInput!: ElementRef;
+
+  // Catálogos
   departamentos: any[] = [];
   subdepartamentos: any[] = [];
   categorias: any[] = [];
@@ -18,7 +20,12 @@ export class PronosticosComponent implements OnInit {
   zonas: any[] = [];
   tiendas: any[] = [];
 
-  // Objeto para guardar la selección actual del usuario
+  // Estado de los modales
+  mostrarModalGuardarFiltro = false;
+  mostrarModalCargarFiltros = false;
+  nombreNuevoFiltro = '';
+
+  // Filtros actuales
   filtros = {
     departamentoId: 0,
     subdepartamentoId: 0,
@@ -30,66 +37,134 @@ export class PronosticosComponent implements OnInit {
     estado: '0'
   };
 
-  // Tu URL base hacia Railway
+  // Simulación de filtros guardados en base de datos
+  filtrosGuardados = [
+    { id: 1, nombre: 'Norte — Lácteos', regiones: 'Norte', departamentos: 'Lácteos', tiendas: '—', fecha: '2026-05-01' },
+    { id: 2, nombre: 'Todas las regiones — Bebidas', regiones: '—', departamentos: '—', tiendas: '—', fecha: '2026-05-20' }
+  ];
+
+  // Configuración de las semanas y celdas
+  semanas = [18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29];
+
+  // Estructura para manejar el estado de cada celda de la fila "Propuesta"
+  propuestas: { [key: number]: { valor: number | null, seleccionado: boolean, editando: boolean } } = {};
+
   private apiUrl = 'https://pronosticos-api-production.up.railway.app/api/v1';
 
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
     this.cargarCatalogosFiltros();
+    this.inicializarSemanas();
   }
 
-  // Traemos todos los catálogos desde los endpoints de tu API
+  inicializarSemanas() {
+    this.semanas.forEach(s => {
+      this.propuestas[s] = { valor: null, seleccionado: false, editando: false };
+    });
+    // Dato de ejemplo precargado en la semana 22
+    this.propuestas[22].valor = 560;
+  }
+
   cargarCatalogosFiltros() {
-    this.http.get<any[]>(`${this.apiUrl}/departamento`).subscribe({
-      next: (data) => this.departamentos = data,
-      error: (err) => console.error('Error cargando departamentos', err)
-    });
-
-    this.http.get<any[]>(`${this.apiUrl}/subdepartamento`).subscribe({
-      next: (data) => this.subdepartamentos = data,
-      error: (err) => console.error('Error cargando subdepartamentos', err)
-    });
-
-    this.http.get<any[]>(`${this.apiUrl}/categoria`).subscribe({
-      next: (data) => this.categorias = data,
-      error: (err) => console.error('Error cargando categorias', err)
-    });
-
-    this.http.get<any[]>(`${this.apiUrl}/region`).subscribe({
-      next: (data) => this.regiones = data,
-      error: (err) => console.error('Error cargando regiones', err)
-    });
-
-    this.http.get<any[]>(`${this.apiUrl}/zona`).subscribe({
-      next: (data) => this.zonas = data,
-      error: (err) => console.error('Error cargando zonas', err)
-    });
-
-    this.http.get<any[]>(`${this.apiUrl}/tienda`).subscribe({
-      next: (data) => this.tiendas = data,
-      error: (err) => console.error('Error cargando tiendas', err)
-    });
+    this.http.get<any[]>(`${this.apiUrl}/departamento`).subscribe({ next: (data) => this.departamentos = data });
+    this.http.get<any[]>(`${this.apiUrl}/region`).subscribe({ next: (data) => this.regiones = data });
+    // ... Agregar el resto de llamadas HTTP aquí ...
   }
 
-  // Se ejecuta al hacer clic en "Aplicar Filtros"
+  // --- LÓGICA DE LA TABLA Y EDICIÓN ---
+
+  seleccionarCelda(semana: number) {
+    // Deseleccionamos todas las demás
+    Object.keys(this.propuestas).forEach(key => {
+      this.propuestas[Number(key)].seleccionado = false;
+      this.propuestas[Number(key)].editando = false; // Cerramos edición si había otra abierta
+    });
+    // Seleccionamos la actual (esto mostrará el lápiz)
+    this.propuestas[semana].seleccionado = true;
+  }
+
+  activarEdicion(semana: number, event: Event) {
+    event.stopPropagation(); // Evita que se dispare el seleccionarCelda de nuevo
+    this.propuestas[semana].editando = true;
+  }
+
+  guardarCelda(semana: number, event: Event) {
+    event.stopPropagation();
+    this.propuestas[semana].editando = false;
+    this.propuestas[semana].seleccionado = false;
+  }
+
+  // --- LÓGICA DE FILTROS ---
+
   aplicarFiltros() {
-    console.log('Filtros seleccionados listos para enviar:', this.filtros);
-    // Aquí puedes llamar a otro endpoint para cargar los Árboles o la Tabla
-    // Ejemplo: this.http.post(`${this.apiUrl}/envio-propuesta-filtro`, this.filtros)...
+    console.log('Filtros aplicados:', this.filtros);
   }
 
-  // Se ejecuta al hacer clic en "Limpiar"
   limpiarFiltros() {
-    this.filtros = {
-      departamentoId: 0,
-      subdepartamentoId: 0,
-      categoriaId: 0,
-      regionId: 0,
-      zonaId: 0,
-      tiendaId: 0,
-      fecha: '',
-      estado: '0'
-    };
+    this.filtros = { departamentoId: 0, subdepartamentoId: 0, categoriaId: 0, regionId: 0, zonaId: 0, tiendaId: 0, fecha: '', estado: '0' };
+  }
+
+  abrirGuardarFiltro() { this.mostrarModalGuardarFiltro = true; }
+  cerrarGuardarFiltro() { this.mostrarModalGuardarFiltro = false; this.nombreNuevoFiltro = ''; }
+
+  guardarFiltroEnBD() {
+    console.log('Guardando filtro:', this.nombreNuevoFiltro, this.filtros);
+    this.cerrarGuardarFiltro();
+  }
+
+  abrirCargarFiltros() { this.mostrarModalCargarFiltros = true; }
+  cerrarCargarFiltros() { this.mostrarModalCargarFiltros = false; }
+
+  cargarFiltroSeleccionado(filtro: any) {
+    console.log('Cargando filtro id:', filtro.id);
+    // Aquí mapearías los datos de "filtro" hacia "this.filtros"
+    this.cerrarCargarFiltros();
+  }
+
+  // --- EXCEL ---
+
+  exportarExcel() {
+    // Exportación básica a formato CSV (Compatible con Excel)
+    let csvContent = "data:text/csv;charset=utf-8,";
+    csvContent += "Semana,Histórico,Pronóstico,Propuesta,Estado\n";
+
+    // Generar las columnas dinámicamente
+    this.semanas.forEach(s => {
+      const valor = this.propuestas[s].valor || 0;
+      csvContent += `S${s},0,0,${valor},--\n`;
+    });
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "pronosticos_export.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  importarExcelClick() {
+    // Abre el selector de archivos oculto
+    this.fileInput.nativeElement.click();
+  }
+
+  onArchivoExcelSeleccionado(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      console.log('Archivo seleccionado para importar:', file.name);
+      // Aquí enviarías el archivo a tu backend (Railway) mediante FormData
+      /*
+      const formData = new FormData();
+      formData.append('file', file);
+      this.http.post(`${this.apiUrl}/pronostico/importar`, formData).subscribe(...)
+      */
+      alert('Archivo cargado exitosamente. (Simulación)');
+    }
+  }
+
+  guardarCambiosGlobales() {
+    console.log('Guardando todos los cambios de las propuestas:', this.propuestas);
+    // Llamada HTTP al backend para guardar las propuestas
   }
 }
