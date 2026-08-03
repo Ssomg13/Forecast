@@ -45,6 +45,67 @@ export class PronosticosComponent implements OnInit {
   // Configuración de las semanas y celdas
   semanas = [18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29];
 
+  // --- VARIABLES PARA LOS ÁRBOLES ---
+  buscarProducto: string = '';
+  buscarTienda: string = '';
+
+  // Simulación de los datos agrupados para el árbol de Productos
+  arbolProductos = [
+    {
+      nombre: 'Lácteos',
+      expandido: true,
+      cantidadTotal: 2,
+      hijos: [
+        { id: 1, nombre: 'Leches', cantidad: 1, seleccionado: false },
+        { id: 2, nombre: 'Yogures', cantidad: 1, seleccionado: false }
+      ]
+    },
+    {
+      nombre: 'Panadería',
+      expandido: false,
+      cantidadTotal: 1,
+      hijos: [
+        { id: 3, nombre: 'Pan Dulce', cantidad: 1, seleccionado: false }
+      ]
+    }
+  ];
+
+  // Simulación de los datos agrupados para el árbol de Tiendas
+  arbolTiendas = [
+    {
+      nombre: 'Norte',
+      expandido: true,
+      cantidadTotal: 1,
+      hijos: [
+        { id: 101, nombre: 'Zona 1', cantidad: 1, seleccionado: false }
+      ]
+    },
+    {
+      nombre: 'Occidente',
+      expandido: false,
+      cantidadTotal: 1,
+      hijos: [
+        { id: 102, nombre: 'Zona 2', cantidad: 1, seleccionado: false }
+      ]
+    }
+  ];
+
+  // --- FUNCIONALIDAD DE LOS ÁRBOLES ---
+
+  toggleNodo(nodo: any) {
+    nodo.expandido = !nodo.expandido;
+  }
+
+  seleccionarItemArbol(item: any, tipo: 'producto' | 'tienda') {
+    // Cambiamos su estado visual
+    item.seleccionado = !item.seleccionado;
+
+    // Aquí puedes agregar la lógica para que, al seleccionarlo,
+    // se actualice la tabla de pronósticos principal.
+    console.log(`Seleccionaste el ${tipo}:`, item.nombre);
+  }
+
+
   // Estructura para manejar el estado de cada celda de la fila "Propuesta"
   propuestas: { [key: number]: { valor: number | null, seleccionado: boolean, editando: boolean } } = {};
 

@@ -47,6 +47,93 @@
     </div>
   </div>
 
+  <!-- CONTENEDOR DE ÁRBOLES (PRODUCTOS E TIENDAS) -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+
+    <!-- Panel de Productos -->
+    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex flex-col max-h-96">
+      <div class="flex justify-between items-center mb-3">
+        <span class="font-semibold text-gray-700 flex items-center gap-2">📦 Productos</span>
+      </div>
+
+      <!-- Buscador de productos (Con id y name) -->
+      <div class="relative mb-3">
+        <input type="text" id="buscarProducto" name="buscarProducto" [(ngModel)]="buscarProducto" placeholder="Buscar producto..." class="w-full p-2 pl-8 text-sm border rounded-lg bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-500">
+        <span class="absolute left-2.5 top-2.5 text-gray-400 text-xs">🔍</span>
+      </div>
+
+      <!-- Árbol -->
+      <div class="overflow-y-auto flex-1 pr-2 space-y-1">
+        <div *ngFor="let categoria of arbolProductos">
+          <!-- Nodo Padre (Ej. Lácteos) -->
+          <div (click)="toggleNodo(categoria)" class="flex justify-between items-center p-2 hover:bg-gray-50 rounded cursor-pointer text-sm font-medium text-gray-700 transition-colors">
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-gray-400 w-4 text-center">{{ categoria.expandido ? '▼' : '▶' }}</span>
+              {{ categoria.nombre }}
+            </div>
+            <span class="bg-gray-200 text-gray-600 text-xs py-0.5 px-2 rounded-full">{{ categoria.cantidadTotal }}</span>
+          </div>
+
+          <!-- Nodos Hijos (Ej. Leches, Yogures) -->
+          <div *ngIf="categoria.expandido" class="ml-6 border-l border-gray-200 pl-2 space-y-1 mt-1">
+            <div *ngFor="let hijo of categoria.hijos"
+                 (click)="seleccionarItemArbol(hijo, 'producto')"
+                 class="flex justify-between items-center p-2 rounded cursor-pointer text-sm transition-colors"
+                 [ngClass]="{'bg-blue-50 text-blue-700 font-medium': hijo.seleccionado, 'hover:bg-gray-50 text-gray-600': !hijo.seleccionado}">
+              <div class="flex items-center gap-2">
+                <span class="text-gray-300 text-xs">›</span>
+                {{ hijo.nombre }}
+              </div>
+              <span class="bg-gray-100 text-gray-500 text-xs py-0.5 px-2 rounded-full" [ngClass]="{'bg-blue-100 text-blue-600': hijo.seleccionado}">{{ hijo.cantidad }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel de Tiendas -->
+    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex flex-col max-h-96">
+      <div class="flex justify-between items-center mb-3">
+        <span class="font-semibold text-gray-700 flex items-center gap-2">🏢 Tiendas</span>
+      </div>
+
+      <!-- Buscador de tiendas (Con id y name) -->
+      <div class="relative mb-3">
+        <input type="text" id="buscarTienda" name="buscarTienda" [(ngModel)]="buscarTienda" placeholder="Buscar tienda..." class="w-full p-2 pl-8 text-sm border rounded-lg bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-500">
+        <span class="absolute left-2.5 top-2.5 text-gray-400 text-xs">🔍</span>
+      </div>
+
+      <!-- Árbol -->
+      <div class="overflow-y-auto flex-1 pr-2 space-y-1">
+        <div *ngFor="let region of arbolTiendas">
+          <!-- Nodo Padre (Ej. Norte) -->
+          <div (click)="toggleNodo(region)" class="flex justify-between items-center p-2 hover:bg-gray-50 rounded cursor-pointer text-sm font-medium text-gray-700 transition-colors">
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-gray-400 w-4 text-center">{{ region.expandido ? '▼' : '▶' }}</span>
+              {{ region.nombre }}
+            </div>
+            <span class="bg-gray-200 text-gray-600 text-xs py-0.5 px-2 rounded-full">{{ region.cantidadTotal }}</span>
+          </div>
+
+          <!-- Nodos Hijos (Ej. Zona 1) -->
+          <div *ngIf="region.expandido" class="ml-6 border-l border-gray-200 pl-2 space-y-1 mt-1">
+            <div *ngFor="let hijo of region.hijos"
+                 (click)="seleccionarItemArbol(hijo, 'tienda')"
+                 class="flex justify-between items-center p-2 rounded cursor-pointer text-sm transition-colors"
+                 [ngClass]="{'bg-blue-50 text-blue-700 font-medium': hijo.seleccionado, 'hover:bg-gray-50 text-gray-600': !hijo.seleccionado}">
+              <div class="flex items-center gap-2">
+                <span class="text-gray-300 text-xs">›</span>
+                {{ hijo.nombre }}
+              </div>
+              <span class="bg-gray-100 text-gray-500 text-xs py-0.5 px-2 rounded-full" [ngClass]="{'bg-blue-100 text-blue-600': hijo.seleccionado}">{{ hijo.cantidad }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
   <!-- SECCIÓN DE PRONÓSTICOS SEMANALES (TABLA) -->
   <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 mb-6">
     <div class="flex justify-between items-center mb-3">
