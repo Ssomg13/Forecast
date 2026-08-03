@@ -19,14 +19,22 @@
 
     <!-- Selects de Filtros -->
     <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3 items-center">
-      <select [(ngModel)]="filtros.departamentoId" class="p-2 text-sm border rounded-lg bg-gray-50 focus:ring-1 focus:ring-blue-500 outline-none"><option [value]="0">Departamento</option><option *ngFor="let d of departamentos" [value]="d.departamentoId">{{d.nombre}}</option></select>
-      <select [(ngModel)]="filtros.subdepartamentoId" class="p-2 text-sm border rounded-lg bg-gray-50 focus:ring-1 focus:ring-blue-500 outline-none"><option [value]="0">Subdepartamento</option></select>
-      <select [(ngModel)]="filtros.categoriaId" class="p-2 text-sm border rounded-lg bg-gray-50 focus:ring-1 focus:ring-blue-500 outline-none"><option [value]="0">Categoría</option></select>
-      <select [(ngModel)]="filtros.regionId" class="p-2 text-sm border rounded-lg bg-gray-50 focus:ring-1 focus:ring-blue-500 outline-none"><option [value]="0">Región</option><option *ngFor="let r of regiones" [value]="r.regionId">{{r.nombre}}</option></select>
-      <select [(ngModel)]="filtros.zonaId" class="p-2 text-sm border rounded-lg bg-gray-50 focus:ring-1 focus:ring-blue-500 outline-none"><option [value]="0">Zona</option></select>
-      <select [(ngModel)]="filtros.tiendaId" class="p-2 text-sm border rounded-lg bg-gray-50 focus:ring-1 focus:ring-blue-500 outline-none"><option [value]="0">Tienda</option></select>
-      <input type="date" [(ngModel)]="filtros.fecha" class="p-2 text-sm border rounded-lg bg-gray-50 focus:ring-1 focus:ring-blue-500 outline-none">
-      <select [(ngModel)]="filtros.estado" class="p-2 text-sm border rounded-lg bg-gray-50 focus:ring-1 focus:ring-blue-500 outline-none">
+      <!-- 1. Departamento -->
+      <select id="filtroDep" name="filtroDep" [(ngModel)]="filtros.departamentoId" class="p-2 text-sm border rounded-lg bg-gray-50 focus:ring-1 focus:ring-blue-500 outline-none"><option [value]="0">Departamento</option><option *ngFor="let d of departamentos" [value]="d.departamentoId">{{d.nombre}}</option></select>
+      <!-- 2. Subdepartamento -->
+      <select id="filtroSubDep" name="filtroSubDep" [(ngModel)]="filtros.subdepartamentoId" class="p-2 text-sm border rounded-lg bg-gray-50 focus:ring-1 focus:ring-blue-500 outline-none"><option [value]="0">Subdepartamento</option></select>
+      <!-- 3. Categoría -->
+      <select id="filtroCat" name="filtroCat" [(ngModel)]="filtros.categoriaId" class="p-2 text-sm border rounded-lg bg-gray-50 focus:ring-1 focus:ring-blue-500 outline-none"><option [value]="0">Categoría</option></select>
+      <!-- 4. Región -->
+      <select id="filtroReg" name="filtroReg" [(ngModel)]="filtros.regionId" class="p-2 text-sm border rounded-lg bg-gray-50 focus:ring-1 focus:ring-blue-500 outline-none"><option [value]="0">Región</option><option *ngFor="let r of regiones" [value]="r.regionId">{{r.nombre}}</option></select>
+      <!-- 5. Zona -->
+      <select id="filtroZon" name="filtroZon" [(ngModel)]="filtros.zonaId" class="p-2 text-sm border rounded-lg bg-gray-50 focus:ring-1 focus:ring-blue-500 outline-none"><option [value]="0">Zona</option></select>
+      <!-- 6. Tienda -->
+      <select id="filtroTie" name="filtroTie" [(ngModel)]="filtros.tiendaId" class="p-2 text-sm border rounded-lg bg-gray-50 focus:ring-1 focus:ring-blue-500 outline-none"><option [value]="0">Tienda</option></select>
+      <!-- 7. Fecha -->
+      <input type="date" id="filtroFecha" name="filtroFecha" [(ngModel)]="filtros.fecha" class="p-2 text-sm border rounded-lg bg-gray-50 focus:ring-1 focus:ring-blue-500 outline-none">
+      <!-- 8. Estado -->
+      <select id="filtroEst" name="filtroEst" [(ngModel)]="filtros.estado" class="p-2 text-sm border rounded-lg bg-gray-50 focus:ring-1 focus:ring-blue-500 outline-none">
         <option value="0">Estado</option>
         <option value="Activo">Activo</option>
         <option value="Inactivo">Inactivo</option>
@@ -46,11 +54,13 @@
         <h3 class="font-bold text-gray-800">Pronósticos Semanales</h3>
         <p class="text-xs text-gray-500">Mostrando todos los datos</p>
       </div>
-      <div class="flex gap-2">
-        <!-- Input oculto para cargar archivo Excel -->
-        <input type="file" #fileInput (change)="onArchivoExcelSeleccionado($event)" accept=".xlsx, .xls, .csv" class="hidden">
 
-        <button (click)="importarExcelClick()" class="px-3 py-1.5 text-sm border rounded-lg text-gray-600 hover:bg-gray-50">📥 Importar Excel</button>
+      <div class="flex gap-2">
+        <!-- 9. Input oculto para cargar archivo Excel (ya con id y name) -->
+        <input type="file" id="archivoExcel" name="archivoExcel" #fileInput (change)="onArchivoExcelSeleccionado($event)" accept=".xlsx, .xls, .csv" class="hidden">
+
+        <!-- El botón ahora activa directamente el input del DOM -->
+        <button (click)="fileInput.click()" class="px-3 py-1.5 text-sm border rounded-lg text-gray-600 hover:bg-gray-50">📥 Importar Excel</button>
         <button (click)="exportarExcel()" class="px-3 py-1.5 text-sm border rounded-lg text-gray-600 hover:bg-gray-50">📤 Exportar Excel</button>
         <button (click)="guardarCambiosGlobales()" class="px-3 py-1.5 text-sm border rounded-lg text-blue-600 border-blue-200 hover:bg-blue-50">💾 Guardar Cambios</button>
       </div>
@@ -111,7 +121,8 @@
   <div *ngIf="mostrarModalGuardarFiltro" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/50 backdrop-blur-sm">
     <div class="bg-white rounded-xl shadow-xl w-full max-w-sm p-6">
       <h3 class="font-bold text-gray-800 mb-4">Guardar Filtros</h3>
-      <input type="text" [(ngModel)]="nombreNuevoFiltro" placeholder="Nombre del filtro" class="w-full p-2 border rounded-lg mb-6 focus:outline-none focus:ring-1 focus:ring-blue-500">
+      <!-- 10. Input del modal (ya con id y name) -->
+      <input type="text" id="nombreNuevoFiltro" name="nombreNuevoFiltro" [(ngModel)]="nombreNuevoFiltro" placeholder="Nombre del filtro" class="w-full p-2 border rounded-lg mb-6 focus:outline-none focus:ring-1 focus:ring-blue-500">
       <div class="flex justify-end gap-2">
         <button (click)="cerrarGuardarFiltro()" class="px-4 py-2 text-sm text-gray-600 border rounded-lg hover:bg-gray-50">Cancelar</button>
         <button (click)="guardarFiltroEnBD()" class="px-4 py-2 text-sm text-white bg-blue-600 rounded-lg hover:bg-blue-700">Guardar</button>

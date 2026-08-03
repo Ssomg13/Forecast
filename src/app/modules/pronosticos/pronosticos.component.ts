@@ -10,7 +10,6 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
   templateUrl: './pronosticos.component.html'
 })
 export class PronosticosComponent implements OnInit {
-  @ViewChild('fileInput') fileInput!: ElementRef;
 
   // Catálogos
   departamentos: any[] = [];
@@ -143,12 +142,6 @@ export class PronosticosComponent implements OnInit {
     link.click();
     document.body.removeChild(link);
   }
-
-  importarExcelClick() {
-    // Abre el selector de archivos oculto
-    this.fileInput.nativeElement.click();
-  }
-
   onArchivoExcelSeleccionado(event: any) {
     const file = event.target.files[0];
     if (file) {
