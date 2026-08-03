@@ -1,40 +1,32 @@
 <div class="p-6 bg-gray-50 min-h-screen relative">
 
-  <!-- ENCABEZADO Y ALERTA SUPERIOR -->
   <div class="mb-4">
     <h2 class="text-2xl font-bold text-gray-800">Autorizar Pronósticos</h2>
   </div>
 
-  <div class="bg-blue-50 border border-blue-200 text-blue-800 p-3 rounded-lg mb-6 flex justify-between items-center text-sm font-medium">
-    <div class="flex items-center gap-2">
-      ✉️ Acceso desde enlace de correo — Proveedor: Lácteos del Norte S.A.
-    </div>
-    <button class="text-blue-500 hover:text-blue-700">✖</button>
-  </div>
-
-  <!-- BARRA DE FILTROS AVANZADOS -->
+  <!-- BARRA DE FILTROS AVANZADOS (CONECTADA A LA API) -->
   <div class="bg-white p-4 rounded-xl shadow-sm mb-4 border border-gray-100">
     <div class="flex justify-between items-center mb-4">
       <h3 class="font-bold text-gray-800 flex items-center gap-2">🔍 Filtros Avanzados</h3>
       <div class="flex gap-2">
-        <button class="px-3 py-1.5 text-sm border rounded-lg text-gray-600 hover:bg-gray-50 flex items-center gap-1"><span>💾</span> Guardar</button>
-        <button class="px-3 py-1.5 text-sm border rounded-lg text-blue-600 border-blue-200 hover:bg-blue-50 flex items-center gap-1"><span>📂</span> Cargar</button>
+        <button (click)="abrirGuardarFiltro()" class="px-3 py-1.5 text-sm border rounded-lg text-gray-600 hover:bg-gray-50 flex items-center gap-1"><span>💾</span> Guardar</button>
+        <button (click)="abrirCargarFiltros()" class="px-3 py-1.5 text-sm border rounded-lg text-blue-600 border-blue-200 hover:bg-blue-50 flex items-center gap-1"><span>📂</span> Cargar</button>
       </div>
     </div>
 
     <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3 items-center">
-      <select id="filtroDep" name="filtroDep" [(ngModel)]="filtros.departamentoId" class="p-2 text-sm border rounded-lg bg-gray-50 outline-none"><option [value]="0">Departamento</option></select>
-      <select id="filtroSubDep" name="filtroSubDep" [(ngModel)]="filtros.subdepartamentoId" class="p-2 text-sm border rounded-lg bg-gray-50 outline-none"><option [value]="0">Subdepartamento</option></select>
-      <select id="filtroCat" name="filtroCat" [(ngModel)]="filtros.categoriaId" class="p-2 text-sm border rounded-lg bg-gray-50 outline-none"><option [value]="0">Categoría</option></select>
-      <select id="filtroReg" name="filtroReg" [(ngModel)]="filtros.regionId" class="p-2 text-sm border rounded-lg bg-gray-50 outline-none"><option [value]="0">Región</option></select>
-      <select id="filtroZon" name="filtroZon" [(ngModel)]="filtros.zonaId" class="p-2 text-sm border rounded-lg bg-gray-50 outline-none"><option [value]="0">Zona</option></select>
-      <select id="filtroTie" name="filtroTie" [(ngModel)]="filtros.tiendaId" class="p-2 text-sm border rounded-lg bg-gray-50 outline-none"><option [value]="0">Tienda</option></select>
+      <select id="filtroDep" name="filtroDep" [(ngModel)]="filtros.departamentoId" class="p-2 text-sm border rounded-lg bg-gray-50 outline-none"><option [value]="0">Departamento</option><option *ngFor="let d of departamentos" [value]="d.departamentoId">{{ d.nombre }}</option></select>
+      <select id="filtroSubDep" name="filtroSubDep" [(ngModel)]="filtros.subdepartamentoId" class="p-2 text-sm border rounded-lg bg-gray-50 outline-none"><option [value]="0">Subdepartamento</option><option *ngFor="let s of subdepartamentos" [value]="s.subdepartamentoId">{{ s.nombre }}</option></select>
+      <select id="filtroCat" name="filtroCat" [(ngModel)]="filtros.categoriaId" class="p-2 text-sm border rounded-lg bg-gray-50 outline-none"><option [value]="0">Categoría</option><option *ngFor="let c of categorias" [value]="c.categoriaId">{{ c.nombre }}</option></select>
+      <select id="filtroReg" name="filtroReg" [(ngModel)]="filtros.regionId" class="p-2 text-sm border rounded-lg bg-gray-50 outline-none"><option [value]="0">Región</option><option *ngFor="let r of regiones" [value]="r.regionId">{{ r.nombre }}</option></select>
+      <select id="filtroZon" name="filtroZon" [(ngModel)]="filtros.zonaId" class="p-2 text-sm border rounded-lg bg-gray-50 outline-none"><option [value]="0">Zona</option><option *ngFor="let z of zonas" [value]="z.zonaId">{{ z.nombre }}</option></select>
+      <select id="filtroTie" name="filtroTie" [(ngModel)]="filtros.tiendaId" class="p-2 text-sm border rounded-lg bg-gray-50 outline-none"><option [value]="0">Tienda</option><option *ngFor="let t of tiendas" [value]="t.tiendaId">{{ t.nombre }}</option></select>
       <input type="date" id="filtroFecha" name="filtroFecha" [(ngModel)]="filtros.fecha" class="p-2 text-sm border rounded-lg bg-gray-50 outline-none">
-      <select id="filtroEst" name="filtroEst" [(ngModel)]="filtros.estado" class="p-2 text-sm border rounded-lg bg-gray-50 outline-none"><option value="0">Estado</option></select>
+      <select id="filtroEst" name="filtroEst" [(ngModel)]="filtros.estado" class="p-2 text-sm border rounded-lg bg-gray-50 outline-none"><option value="0">Estado</option><option value="Activo">Activo</option><option value="Inactivo">Inactivo</option></select>
     </div>
     <div class="flex justify-end gap-3 mt-4">
-      <button class="px-4 py-2 text-sm text-blue-600 border border-blue-200 rounded-lg hover:bg-blue-50">Limpiar</button>
-      <button class="px-4 py-2 text-sm text-white bg-blue-600 rounded-lg hover:bg-blue-700">🔍 Aplicar Filtros</button>
+      <button (click)="limpiarFiltros()" class="px-4 py-2 text-sm text-blue-600 border border-blue-200 rounded-lg hover:bg-blue-50">Limpiar</button>
+      <button (click)="aplicarFiltros()" class="px-4 py-2 text-sm text-white bg-blue-600 rounded-lg hover:bg-blue-700 shadow-sm">🔍 Aplicar Filtros</button>
     </div>
   </div>
 
@@ -45,68 +37,39 @@
       <select id="provSelect" name="provSelect" [(ngModel)]="proveedorSeleccionado" class="p-2 text-sm border rounded-lg bg-gray-50 w-64 focus:outline-none focus:ring-1 focus:ring-blue-500">
         <option [value]="0">Selecciona un proveedor</option>
         <option *ngFor="let p of proveedores" [value]="p.proveedorId">{{ p.razonSocial || p.nombre }}</option>
-        <option [value]="999">Lácteos del Norte S.A.</option> <!-- Simulacion -->
       </select>
-
-      <!-- Badges Informativos (Contadores) -->
-      <span class="px-3 py-1 text-xs font-medium rounded-full bg-blue-50 text-blue-600 border border-blue-200">{{ totalPropuestas }} propuestas</span>
-      <span class="px-3 py-1 text-xs font-medium rounded-full bg-green-50 text-green-600 border border-green-200">{{ totalAutorizadas }} autorizadas</span>
-      <span *ngIf="totalPendientes > 0" class="px-3 py-1 text-xs font-medium rounded-full bg-orange-50 text-orange-600 border border-orange-200">{{ totalPendientes }} pendientes</span>
     </div>
-
     <div class="flex items-center gap-3">
-      <button (click)="autorizarTodas()" [disabled]="totalPendientes === 0" class="px-4 py-2 text-sm border rounded-lg font-medium transition-colors flex items-center gap-2" [ngClass]="{'text-gray-400 border-gray-200 bg-gray-50': totalPendientes === 0, 'text-green-600 border-green-200 hover:bg-green-50': totalPendientes > 0}">
-        ✓ Autorizar todas
-      </button>
       <button (click)="enviarAprobacion()" class="px-5 py-2 text-sm text-white rounded-lg font-medium shadow-sm transition-colors flex items-center gap-2" [ngClass]="{'bg-blue-600 hover:bg-blue-700': todasDecididas, 'bg-blue-400 cursor-not-allowed': !todasDecididas}">
         📤 Enviar aprobación
       </button>
     </div>
   </div>
 
-  <!-- ALERTA: FALTAN DECISIONES -->
+  <!-- ALERTA -->
   <div *ngIf="mostrarBannerFaltaDecision" class="bg-orange-50 border border-orange-200 text-orange-800 p-3 rounded-lg mb-6 flex items-center gap-3 text-sm animate-fade-in-up">
     ⚠️ Tienes <b>{{ totalPendientes }} semanas</b> con propuesta sin decisión. Debes autorizar o rechazar todas antes de enviar la aprobación.
   </div>
 
   <!-- ÁRBOLES -->
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-    <!-- PRODUCTOS -->
     <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
       <h3 class="font-semibold text-gray-700 flex items-center gap-2 mb-3">📦 Productos</h3>
       <input type="text" id="buscProdAuth" name="buscProdAuth" placeholder="Buscar..." class="w-full p-2 text-sm border rounded-lg mb-3 bg-gray-50">
       <div class="overflow-y-auto space-y-1 text-sm h-28">
         <div *ngFor="let cat of arbolProductos">
-          <div (click)="toggleNodo(cat)" class="flex justify-between p-2 hover:bg-gray-50 rounded cursor-pointer font-medium text-blue-600">
-            <span>{{ cat.expandido ? '▼' : '▶' }} {{ cat.nombre }}</span>
-            <span class="bg-gray-100 text-gray-600 text-xs py-0.5 px-2 rounded-full">{{ cat.cantidadTotal }}</span>
-          </div>
-          <div *ngIf="cat.expandido" class="ml-4 pl-2 border-l border-gray-200">
-            <div *ngFor="let h of cat.hijos" class="flex justify-between p-2 text-gray-600">
-              <span>› {{ h.nombre }}</span>
-              <span class="bg-gray-100 text-gray-500 text-xs py-0.5 px-2 rounded-full">{{ h.cantidad }}</span>
-            </div>
-          </div>
+          <div (click)="toggleNodo(cat)" class="flex justify-between p-2 hover:bg-gray-50 rounded cursor-pointer font-medium text-blue-600"><span>{{ cat.expandido ? '▼' : '▶' }} {{ cat.nombre }}</span><span class="bg-gray-100 text-gray-600 text-xs py-0.5 px-2 rounded-full">{{ cat.cantidadTotal }}</span></div>
+          <div *ngIf="cat.expandido" class="ml-4 pl-2 border-l border-gray-200"><div *ngFor="let h of cat.hijos" class="flex justify-between p-2 text-gray-600"><span>› {{ h.nombre }}</span><span class="bg-gray-100 text-gray-500 text-xs py-0.5 px-2 rounded-full">{{ h.cantidad }}</span></div></div>
         </div>
       </div>
     </div>
-
-    <!-- TIENDAS -->
     <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
       <h3 class="font-semibold text-gray-700 flex items-center gap-2 mb-3">🏢 Tiendas</h3>
       <input type="text" id="buscTieAuth" name="buscTieAuth" placeholder="Buscar..." class="w-full p-2 text-sm border rounded-lg mb-3 bg-gray-50">
       <div class="overflow-y-auto space-y-1 text-sm h-28">
         <div *ngFor="let reg of arbolTiendas">
-          <div (click)="toggleNodo(reg)" class="flex justify-between p-2 hover:bg-gray-50 rounded cursor-pointer font-medium text-blue-600">
-            <span>{{ reg.expandido ? '▼' : '▶' }} {{ reg.nombre }}</span>
-            <span class="bg-gray-100 text-gray-600 text-xs py-0.5 px-2 rounded-full">{{ reg.cantidadTotal }}</span>
-          </div>
-          <div *ngIf="reg.expandido" class="ml-4 pl-2 border-l border-gray-200">
-            <div *ngFor="let h of reg.hijos" class="flex justify-between p-2 text-gray-600">
-              <span>› {{ h.nombre }}</span>
-              <span class="bg-gray-100 text-gray-500 text-xs py-0.5 px-2 rounded-full">{{ h.cantidad }}</span>
-            </div>
-          </div>
+          <div (click)="toggleNodo(reg)" class="flex justify-between p-2 hover:bg-gray-50 rounded cursor-pointer font-medium text-blue-600"><span>{{ reg.expandido ? '▼' : '▶' }} {{ reg.nombre }}</span><span class="bg-gray-100 text-gray-600 text-xs py-0.5 px-2 rounded-full">{{ reg.cantidadTotal }}</span></div>
+          <div *ngIf="reg.expandido" class="ml-4 pl-2 border-l border-gray-200"><div *ngFor="let h of reg.hijos" class="flex justify-between p-2 text-gray-600"><span>› {{ h.nombre }}</span><span class="bg-gray-100 text-gray-500 text-xs py-0.5 px-2 rounded-full">{{ h.cantidad }}</span></div></div>
         </div>
       </div>
     </div>
@@ -117,59 +80,46 @@
     <div class="flex justify-between items-center mb-3">
       <div>
         <h3 class="font-bold text-gray-800">Pronósticos Semanales</h3>
-        <p class="text-xs text-gray-500">Propuestas de: Lácteos del Norte S.A.</p>
+        <p class="text-xs text-gray-500">Propuestas de: {{ obtenerNombreProveedor() }}</p>
+      </div>
+
+      <!-- CONTADORES Y BOTÓN AUTORIZAR TODAS (Justo encima de la tabla) -->
+      <div class="flex items-center gap-3 bg-white">
+        <span class="px-3 py-1 text-xs font-medium rounded-full border border-orange-300 text-orange-500 bg-white">
+          {{ totalPendientes }} pendientes
+        </span>
+        <span class="px-3 py-1 text-xs font-medium rounded-full border border-green-300 text-green-600 bg-white">
+          {{ totalAutorizadas }} autorizadas
+        </span>
+        <button (click)="autorizarTodas()" [disabled]="totalPendientes === 0" class="px-4 py-1.5 text-sm border rounded-lg font-medium transition-colors flex items-center gap-2 text-green-600 border-green-300 hover:bg-green-50 disabled:text-gray-400 disabled:border-gray-200 disabled:bg-gray-50">
+          ✓ Autorizar todas
+        </button>
       </div>
     </div>
 
     <div class="overflow-x-auto border rounded-lg">
       <table class="w-full text-left border-collapse text-sm">
-        <thead>
-        <tr class="bg-gray-100 border-b text-gray-700">
-          <th class="p-2 border-r w-32">Semana</th>
-          <th class="p-2 border-r text-center w-24" *ngFor="let s of semanas">S{{s}}</th>
-        </tr>
-        </thead>
+        <thead><tr class="bg-gray-100 border-b text-gray-700"><th class="p-2 border-r w-32">Semana</th><th class="p-2 border-r text-center w-24" *ngFor="let s of semanas">S{{s}}</th></tr></thead>
         <tbody>
-        <!-- Histórico / Pronóstico (Vacíos por ahora como en la foto) -->
         <tr class="border-b"><td class="p-2 font-medium border-r bg-gray-50">Histórico ▾</td><td *ngFor="let s of semanas" class="border-r p-2 text-center text-gray-500"></td></tr>
         <tr class="border-b"><td class="p-2 font-medium border-r bg-gray-50">Pronóstico ▾</td><td *ngFor="let s of semanas" class="border-r p-2 text-center text-gray-500"></td></tr>
 
-        <!-- FILA PROPUESTA: Aquí ocurre la magia de la autorización -->
         <tr class="border-b">
           <td class="p-2 font-medium border-r bg-amber-50 text-amber-900">Propuesta ▾</td>
-
           <td *ngFor="let s of semanas" class="border-r p-0 text-center relative transition-colors h-20"
-              [ngClass]="{
-                  'bg-green-500 text-white': propuestas[s].estado === 'autorizada',
-                  'bg-red-500 text-white': propuestas[s].estado === 'rechazada',
-                  'bg-amber-100/40': propuestas[s].estado === 'pendiente',
-                  'bg-white text-gray-400': propuestas[s].estado === 'ninguna'
-                }">
-
-            <!-- SI NO HAY PROPUESTA -->
+              [ngClass]="{'bg-green-500 text-white': propuestas[s].estado === 'autorizada', 'bg-red-500 text-white': propuestas[s].estado === 'rechazada', 'bg-amber-100/40': propuestas[s].estado === 'pendiente', 'bg-white text-gray-400': propuestas[s].estado === 'ninguna'}">
             <div *ngIf="propuestas[s].estado === 'ninguna'" class="flex items-center justify-center h-full">—</div>
-
-            <!-- SI HAY PROPUESTA -->
             <div *ngIf="propuestas[s].estado !== 'ninguna'" class="flex flex-col items-center justify-center h-full px-1">
               <span class="font-bold text-base leading-tight">{{ propuestas[s].valorPropuesto }}</span>
-              <span class="text-xs leading-tight mb-1" [ngClass]="{'text-green-100': propuestas[s].estado === 'autorizada', 'text-gray-500': propuestas[s].estado === 'pendiente'}">
-                  {{ calcularVariacion(s) }}
-                </span>
-
-              <!-- Botones de Acción: Pendiente -->
+              <span class="text-xs leading-tight mb-1" [ngClass]="{'text-green-100': propuestas[s].estado === 'autorizada', 'text-gray-500': propuestas[s].estado === 'pendiente'}">{{ calcularVariacion(s) }}</span>
               <div *ngIf="propuestas[s].estado === 'pendiente'" class="flex gap-3 text-sm mt-1">
-                <button (click)="autorizar(s)" class="text-blue-600 hover:scale-125 transition-transform" title="Autorizar">✓</button>
-                <button (click)="rechazar(s)" class="text-red-500 hover:scale-125 transition-transform" title="Rechazar">✗</button>
+                <button (click)="autorizar(s)" class="text-blue-600 hover:scale-125 transition-transform">✓</button>
+                <button (click)="rechazar(s)" class="text-red-500 hover:scale-125 transition-transform">✗</button>
               </div>
-
-              <!-- Botón de Acción: Autorizada / Rechazada -->
-              <button *ngIf="propuestas[s].estado !== 'pendiente'" (click)="deshacer(s)" class="text-[10px] uppercase font-bold text-white/80 hover:text-white mt-1 hover:underline">
-                Deshacer
-              </button>
+              <button *ngIf="propuestas[s].estado !== 'pendiente'" (click)="deshacer(s)" class="text-[10px] uppercase font-bold text-white/80 hover:text-white mt-1 hover:underline">Deshacer</button>
             </div>
           </td>
         </tr>
-
         <tr class="border-b"><td class="p-2 font-medium border-r bg-gray-50">Estado ▾</td><td *ngFor="let s of semanas" class="border-r p-2 text-center text-gray-500"></td></tr>
         </tbody>
       </table>
@@ -185,6 +135,44 @@
       <li>Usa ✓ Autorizar o ✗ Rechazar en cada semana, o "Autorizar todas" para aprobar todo de un clic.</li>
       <li>Cuando todas las propuestas tengan decisión, haz clic en "Enviar aprobación" para notificar al proveedor.</li>
     </ol>
+  </div>
+
+  <!-- ================= MODALES (OVERLAYS) ================= -->
+  <!-- Modal: Guardar Filtro -->
+  <div *ngIf="mostrarModalGuardarFiltro" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/50 backdrop-blur-sm">
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-sm p-6">
+      <h3 class="font-bold text-gray-800 mb-4">Guardar Filtros</h3>
+      <input type="text" id="nombreNuevoFiltro" name="nombreNuevoFiltro" [(ngModel)]="nombreNuevoFiltro" placeholder="Nombre del filtro" class="w-full p-2 border rounded-lg mb-6 focus:outline-none focus:ring-1 focus:ring-blue-500">
+      <div class="flex justify-end gap-2">
+        <button (click)="cerrarGuardarFiltro()" class="px-4 py-2 text-sm text-gray-600 border rounded-lg hover:bg-gray-50">Cancelar</button>
+        <button (click)="guardarFiltroEnBD()" class="px-4 py-2 text-sm text-white bg-blue-600 rounded-lg hover:bg-blue-700">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Cargar Filtros -->
+  <div *ngIf="mostrarModalCargarFiltros" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/50 backdrop-blur-sm">
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-4xl p-6">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="font-bold text-gray-800 text-lg">Filtros Guardados</h3>
+        <button (click)="cerrarCargarFiltros()" class="text-gray-400 hover:text-gray-700">✖</button>
+      </div>
+      <div class="border rounded-lg overflow-hidden">
+        <table class="w-full text-left text-sm">
+          <thead class="bg-gray-50 border-b"><tr><th class="p-3">Nombre</th><th class="p-3">Fecha</th><th class="p-3 text-center">Acciones</th></tr></thead>
+          <tbody>
+          <tr *ngFor="let f of filtrosGuardados" class="border-b hover:bg-gray-50">
+            <td class="p-3 font-medium text-gray-800">{{ f.nombre }}</td>
+            <td class="p-3 text-gray-500">{{ f.fecha }}</td>
+            <td class="p-3 flex justify-center gap-3">
+              <button (click)="cargarFiltroSeleccionado(f)" class="text-blue-600 hover:underline">Aplicar</button>
+              <button class="text-red-500 hover:text-red-700">🗑️</button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 
 </div>
