@@ -6,6 +6,7 @@ import { UsuariosComponent } from './modules/usuarios/usuarios.component';
 import { MainLayoutComponent } from './modules/main-layout/main-layout.component';
 import {PerfilesComponent} from './modules/perfiles/perfiles.component';
 import { CambiarContrasenaComponent } from './modules/auth/cambiar-contrasena/cambiar-contrasena.component';
+import {AutorizarPronosticosComponent} from "./modules/pronosticos/autorizar-pronosticos.component";
 
 export const routes: Routes = [
   // 1. RUTAS PÚBLICAS (No tienen encabezado)
@@ -23,6 +24,7 @@ export const routes: Routes = [
       { path: 'usuarios', component: UsuariosComponent },
       { path: 'perfiles', component: PerfilesComponent },
       { path: 'cambiar-contrasena', component: CambiarContrasenaComponent },
+      { path: 'autorizar-pronosticos', component: AutorizarPronosticosComponent },
     ]
   }
 ];
